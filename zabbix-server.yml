@@ -1,0 +1,71 @@
+---
+- name: "Zabbix"
+  hosts: server
+  become: true
+  tasks:
+  - name: Update apt repo and cache
+    ansible.builtin.apt:
+      update_cache: true
+      force_apt_get: true
+      cache_valid_time: 3600
+  - name: Upgrade all packages on servers
+    ansible.builtin.apt:
+      upgrade: dist
+      force_apt_get: true
+  - name: Install postgres
+    ansible.builtin.apt:
+      name: postgresql, python3-psycopg2, acl, wget
+      state: present
+  - name: Zabbix Repo
+    ansible.builtin.get_url:
+      url: https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+      dest: /tmp/
+  - name: Zabbix Repo
+    ansible.builtin.apt:
+      deb: /tmp/zabbix-release_6.0-4+debian11_all.deb
+  - name: Install Zabbix etc
+    ansible.builtin.apt:
+      update_cache: true
+      name: zabbix-server-pgsql, zabbix-frontend-php, php7.4-pgsql, zabbix-apache-conf, zabbix-sql-scripts
+      state: present
+  - name: Create a PostgreSQL user
+    become: true
+    become_user: postgres
+    community.postgresql.postgresql_user:
+      name: zabbix
+      password: 123456
+      role_attr_flags: CREATEDB
+      encrypted: true
+      state: present
+  - name: Create a PostgreSQL database
+    become: true
+    become_user: postgres
+    community.postgresql.postgresql_db:
+      name: "zabbix"
+      owner: "zabbix"
+      state: present
+  - name: Set zabbix server DB password
+    ansible.builtin.lineinfile:
+      dest: /etc/zabbix/zabbix_server.conf
+      regexp: '^DBPassword=*'
+      line: "DBPassword=123456"
+      state: present
+  - name: Restart postgres
+    ansible.builtin.systemd:
+      name: postgresql
+      state: restarted
+  - name: Set up new DB
+    shell: |
+      zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+    args:
+      warn: false
+  - name: Restart and enable apache
+    ansible.builtin.systemd:
+      name: apache2
+      state: restarted
+      enabled: true
+  - name: Restart and enable zabbix-server
+    ansible.builtin.systemd:
+      name: zabbix-server
+      state: restarted
+      enabled: true

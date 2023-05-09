@@ -1,0 +1,37 @@
+---
+- name: "Zabbix agents"
+  hosts: agent
+  become: true
+  tasks:
+  - name: Update apt repo and cache
+    ansible.builtin.apt:
+      update_cache: true
+      force_apt_get: true
+      cache_valid_time: 3600
+  - name: Upgrade all packages on servers
+    ansible.builtin.apt:
+      upgrade: dist
+      force_apt_get: true
+  - name: Zabbix Repo
+    ansible.builtin.get_url:
+      url: https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+      dest: /tmp/
+  - name: Zabbix Repo
+    ansible.builtin.apt:
+      deb: /tmp/zabbix-release_6.0-4+debian11_all.deb
+  - name: Install Zabbix agent
+    ansible.builtin.apt:
+      update_cache: true
+      name: zabbix-agent
+      state: present
+  - name: Modify zabbix agent configuration
+    ansible.builtin.lineinfile:
+      dest: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^Server='
+      line: "Server={{ hostvars['zabbix_server'].ansible_host }}"
+      state: present
+  - name: Restart and enable zabbix-agent
+    ansible.builtin.systemd:
+      name: zabbix-agent
+      state: restarted
+      enabled: true
