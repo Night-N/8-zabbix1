@@ -129,6 +129,9 @@ output "external_ip_address_zabbix-slave2" {
 }
 resource "null_resource" "ansible-zabbix-server" {
   depends_on = [yandex_compute_instance.zabbix-server]
+  triggers = {
+    server_ip = yandex_compute_instance.zabbix-server.network_interface.0.nat_ip_address
+  }
   provisioner "local-exec" {
     command = <<EOF
       #!/bin/bash
@@ -139,6 +142,9 @@ resource "null_resource" "ansible-zabbix-server" {
 }
 resource "null_resource" "ansible-zabbix-slave1" {
   depends_on = [yandex_compute_instance.zabbix-slave1]
+  triggers = {
+    slave1_ip = yandex_compute_instance.zabbix-slave1.network_interface.0.nat_ip_address
+  }
   provisioner "local-exec" {
     command = <<EOF
       #!/bin/bash
@@ -149,6 +155,9 @@ resource "null_resource" "ansible-zabbix-slave1" {
 }
 resource "null_resource" "ansible-zabbix-slave2" {
   depends_on = [yandex_compute_instance.zabbix-slave2]
+  triggers = {
+    slave2_ip = yandex_compute_instance.zabbix-slave2.network_interface.0.nat_ip_address
+  }
   provisioner "local-exec" {
     command = <<EOF
       #!/bin/bash

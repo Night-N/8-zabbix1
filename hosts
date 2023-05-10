@@ -21,7 +21,7 @@
 server
 agent
 [server]
-zabbix_server ansible_host=51.250.6.23 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
+zabbix_server ansible_host=84.201.130.106 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
 [agent]
-zabbix_slave1 ansible_host=84.201.129.186 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
-zabbix_slave2 ansible_host=51.250.12.103 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
+zabbix_slave1 ansible_host=51.250.85.138 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
+zabbix_slave2 ansible_host=51.250.95.100 ansible_ssh_user=night ansible_ssh_private_key_file=/home/night/tf-zabbix/yc-terraform 
