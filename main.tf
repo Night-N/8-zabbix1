@@ -16,6 +16,7 @@ provider "yandex" {
 resource "yandex_compute_instance" "zabbix-server" {
   name = "debian11-zabbix-server"
   platform_id = "standard-v3"
+  allow_stopping_for_update = true
   resources {
     core_fraction = 50
     cores  = 2
@@ -48,6 +49,7 @@ resource "yandex_compute_instance" "zabbix-server" {
 resource "yandex_compute_instance" "zabbix-slave1" {
   name = "debian11-zabbix-slave1"
   platform_id = "standard-v3"
+  allow_stopping_for_update = true
   resources {
     core_fraction = 20
     cores  = 2
@@ -79,6 +81,7 @@ resource "yandex_compute_instance" "zabbix-slave1" {
 resource "yandex_compute_instance" "zabbix-slave2" {
   name = "debian11-zabbix-slave2"
   platform_id = "standard-v3"
+  allow_stopping_for_update = true
   resources {
     core_fraction = 20
     cores  = 2
@@ -103,7 +106,7 @@ resource "yandex_compute_instance" "zabbix-slave2" {
   }
 
   scheduling_policy {
-    preemptible = true
+    preemptible = false
   }
 
 }
@@ -130,7 +133,7 @@ output "external_ip_address_zabbix-slave2" {
 resource "null_resource" "ansible-zabbix-server" {
   depends_on = [yandex_compute_instance.zabbix-server]
   triggers = {
-    server_ip = yandex_compute_instance.zabbix-server.network_interface.0.nat_ip_address
+    serverip = yandex_compute_instance.zabbix-server.network_interface.0.nat_ip_address
   }
   provisioner "local-exec" {
     command = <<EOF
@@ -143,7 +146,7 @@ resource "null_resource" "ansible-zabbix-server" {
 resource "null_resource" "ansible-zabbix-slave1" {
   depends_on = [yandex_compute_instance.zabbix-slave1]
   triggers = {
-    slave1_ip = yandex_compute_instance.zabbix-slave1.network_interface.0.nat_ip_address
+    slave1ip = yandex_compute_instance.zabbix-slave1.network_interface.0.nat_ip_address
   }
   provisioner "local-exec" {
     command = <<EOF
@@ -156,7 +159,7 @@ resource "null_resource" "ansible-zabbix-slave1" {
 resource "null_resource" "ansible-zabbix-slave2" {
   depends_on = [yandex_compute_instance.zabbix-slave2]
   triggers = {
-    slave2_ip = yandex_compute_instance.zabbix-slave2.network_interface.0.nat_ip_address
+    slave2ip = yandex_compute_instance.zabbix-slave2.network_interface.0.nat_ip_address
   }
   provisioner "local-exec" {
     command = <<EOF
