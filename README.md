@@ -1,52 +1,66 @@
-# Домашнее задание к занятию "`Система мониторинга Zabbix`" - `Горбунов Владимир`
+# Система мониторинга Zabbix
+## Домашнее задание. Горбунов Владимир
+
+## Цели задания
+1. Научиться устанавливать Zabbix Server c веб-интерфейсом
+2. Научиться устанавливать Zabbix Agent на хосты
+3. Научиться устанавливать Zabbix Agent на компьютер и подключать его к серверу Zabbix 
 
 
+## Содержание
+- [Задание 1. Установка Zabbix c веб-интерфейсом](#Задание-1)
+- [Задание 2. Zabbix agent на хостах с linux](#Задание-2)  
+- [Задание 3. Zabbix agent на windows](#Задание-3)  
 
-### Задание 1
+## Задание 1
+Установка Zabbix c веб-интерфейсом
 
-`1. Скриншот админки Zabbix:`<br>
+- В этом задании решил помимо прочего попрактиковаться с ансиблом, и автоматизировать процесс установки забикса с помощью ансибла и терраформа. 
+- Написал плэйбук ансибла для установки забикс-сервера на дебиан 11:
 
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix1-adminpanel.jpg)<br>
+https://github.com/Night-N/8-zabbix1/blob/master/zabbix-server.yml
 
-`2. Написал плэйбук ансибла для установки забикс-сервера на дебиан 11:`<br>
+- Плейбук ансибла для установки забикс-агента на дебиан 11:
 
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-server.yml<br>
-
-`плейбук ансибла для установки забикс-агента на дебиан 11:`<br>
-
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml<br>
-
-
-`Забикс сервер и два сервера с агентами создаются терраформом в яндекс клауде:`<br>
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix1-tf.jpg)<br>
-https://github.com/Night-N/8-zabbix1/blob/master/main.tf<br>
-`Терраформом создаются три машины - забикс сервер и две с агентом. С помощью null-resource и команды sed получившиеся внешние IP адреса 
-записываются сразу же в инвентарь ансибла ./hosts, после этого вручную запускаются плейбуки для server и agent,
-на забикс агентах с помощью ансибла записывается айпишник забикс сервера.`
+https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
 
 
-### Задание 2
+- Забикс сервер и два сервера с агентами создаются терраформом в яндекс клауде:
+![Название скриншота](img/zabbix1-tf.jpg)
+https://github.com/Night-N/8-zabbix1/blob/master/main.tf
 
-`1. Агенты, подключенные к серверу:`<br>
+В итоге терраформом создаются три машины - забикс сервер и две с агентом. С помощью null-resource и команды sed получившиеся внешние IP адреса 
+записываются сразу же в инвентарь ансибла ./hosts. 
+После чего запускаются плейбуки для server и agent, на забикс агентах с помощью ансибла записывается айпишник забикс сервера.
 
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix1-hosts.jpg)<br>
+- Скриншот админки Zabbix:
 
+![Название скриншота](img/zabbix1-adminpanel.jpg)
 
-`2. Лог заббикс-агента:`<br>
+## Задание 2
+Zabbix agent на хостах с linux
+- Агенты, подключенные к серверу:
 
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix1-agentlog.jpg)<br>
-
-
-`3. Latest data для двух хостов:`<br>
-
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix1-latestdata.jpg)<br>
-
-`4. Команды - с официального сайта Zabbix, на их основе написан плэйбук ансибла`<br>
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml<br>
+![Название скриншота](img/zabbix1-hosts.jpg)
 
 
-### Задание 3
+- Лог заббикс-агента:
 
-`1. Скриншот с логами windows`<br>
+![Название скриншота](img/zabbix1-agentlog.jpg)
 
-![Название скриншота](https://github.com/Night-N/8-zabbix1/blob/master/zabbix-windows.jpg)<br>
+
+- Latest data для двух хостов:
+
+![Название скриншота](img/zabbix1-latestdata.jpg)
+
+- Забикс агент устанавливается ансиблом, плейбук написан на основе команд с официального сайта Zabbix
+https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
+
+
+## Задание 3
+Zabbix agent на windows
+В соответствии с заданием, на мониторинг был поставлен компьютер с windows в режиме active, т.к. машина с виндой находится за натом, а проброс портов на роутере было невозможно настроить из-за отстутствия доступа к админке.
+
+- Скриншот с логами windows
+
+![Название скриншота](img/zabbix-windows.jpg)
