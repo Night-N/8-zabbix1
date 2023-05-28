@@ -26,32 +26,34 @@ https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
 
 
 - Забикс сервер и два сервера с агентами создаются терраформом в яндекс клауде:
-![Название скриншота](img/zabbix1-tf.jpg)
+![](img/zabbix1-tf.jpg)
+
 https://github.com/Night-N/8-zabbix1/blob/master/main.tf
 
 В итоге терраформом создаются три машины - забикс сервер и две с агентом. С помощью null-resource и команды sed получившиеся внешние IP адреса 
 записываются сразу же в инвентарь ансибла ./hosts. 
-После чего запускаются плейбуки для server и agent, на забикс агентах с помощью ансибла записывается айпишник забикс сервера.
+
+После чего запускаются плейбуки для server и agent, на забикс агентах с помощью ансибла записывается IP забикс сервера.
 
 - Скриншот админки Zabbix:
 
-![Название скриншота](img/zabbix1-adminpanel.jpg)
+![](img/zabbix1-adminpanel.jpg)
 
 ## Задание 2
 Zabbix agent на хостах с linux
 - Агенты, подключенные к серверу:
 
-![Название скриншота](img/zabbix1-hosts.jpg)
+![](img/zabbix1-hosts.jpg)
 
 
 - Лог заббикс-агента:
 
-![Название скриншота](img/zabbix1-agentlog.jpg)
+![](img/zabbix1-agentlog.jpg)
 
 
 - Latest data для двух хостов:
 
-![Название скриншота](img/zabbix1-latestdata.jpg)
+![](img/zabbix1-latestdata.jpg)
 
 - Забикс агент устанавливается ансиблом, плейбук написан на основе команд с официального сайта Zabbix
 https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
@@ -59,8 +61,11 @@ https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
 
 ## Задание 3
 Zabbix agent на windows
-В соответствии с заданием, на мониторинг был поставлен компьютер с windows в режиме active, т.к. машина с виндой находится за натом, а проброс портов на роутере было невозможно настроить из-за отстутствия доступа к админке.
+
+В соответствии с заданием на мониторинг был поставлен компьютер с windows
+
+Включен режим active, т.к. машина с виндой находится за натом, а проброс портов на роутере было невозможно настроить из-за отстутствия доступа к админке.
 
 - Скриншот с логами windows
 
-![Название скриншота](img/zabbix-windows.jpg)
+![](img/zabbix-windows.jpg)
