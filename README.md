@@ -18,17 +18,16 @@
 - В этом задании решил помимо прочего попрактиковаться с ансиблом, и автоматизировать процесс установки забикса с помощью ансибла и терраформа. 
 - Написал плэйбук ансибла для установки забикс-сервера на дебиан 11:
 
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-server.yml
+[zabbix-server.yml](zabbix-server.yml)
 
 - Плейбук ансибла для установки забикс-агента на дебиан 11:
 
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
-
+[zabbix-agent.yml](zabbix-agent.yml)
 
 - Забикс сервер и два сервера с агентами создаются терраформом в яндекс клауде:
 ![](img/zabbix1-tf.jpg)
 
-https://github.com/Night-N/8-zabbix1/blob/master/main.tf
+[main.tf](main.tf)
 
 В итоге терраформом создаются три машины - забикс сервер и две с агентом. С помощью null-resource и команды sed получившиеся внешние IP адреса 
 записываются сразу же в инвентарь ансибла ./hosts. 
@@ -56,7 +55,8 @@ Zabbix agent на хостах с linux
 ![](img/zabbix1-latestdata.jpg)
 
 - Забикс агент устанавливается ансиблом, плейбук написан на основе команд с официального сайта Zabbix
-https://github.com/Night-N/8-zabbix1/blob/master/zabbix-agent.yml
+  
+[zabbix-agent.yml](zabbix-agent.yml)
 
 
 ## Задание 3
